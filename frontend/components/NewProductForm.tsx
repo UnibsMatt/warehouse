@@ -52,9 +52,7 @@ export default function NewProductForm() {
     <div className="card">
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-brand-dark mb-1">
-            Name
-          </label>
+          <label className="block text-sm font-medium text-brand-dark mb-1">Name</label>
           <input
             type="text"
             value={name}
@@ -66,9 +64,7 @@ export default function NewProductForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-brand-dark mb-1">
-            Type / Category
-          </label>
+          <label className="block text-sm font-medium text-brand-dark mb-1">Type / Category</label>
           <input
             type="text"
             value={type}
@@ -80,9 +76,7 @@ export default function NewProductForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-brand-dark mb-1">
-            Code
-          </label>
+          <label className="block text-sm font-medium text-brand-dark mb-1">Code</label>
           <input
             type="text"
             value={code}
@@ -94,9 +88,7 @@ export default function NewProductForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-brand-dark mb-1">
-            Unit Price (€)
-          </label>
+          <label className="block text-sm font-medium text-brand-dark mb-1">Unit Price (€)</label>
           <input
             type="number"
             value={price}
@@ -109,9 +101,7 @@ export default function NewProductForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-brand-dark mb-1">
-            Initial Quantity
-          </label>
+          <label className="block text-sm font-medium text-brand-dark mb-1">Initial Quantity</label>
           <input
             type="number"
             value={quantity}
@@ -136,8 +126,19 @@ export default function NewProductForm() {
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  />
                 </svg>
                 Creating...
               </span>

@@ -49,8 +49,18 @@ export default function LoginPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-blue rounded-2xl mb-4 shadow-lg">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            <svg
+              className="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+              />
             </svg>
           </div>
           <h1 className="text-3xl font-bold text-brand-dark">Warehouse</h1>
@@ -61,10 +71,7 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-brand-dark mb-1"
-              >
+              <label htmlFor="email" className="block text-sm font-medium text-brand-dark mb-1">
                 Email address
               </label>
               <input
@@ -80,10 +87,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-brand-dark mb-1"
-              >
+              <label htmlFor="password" className="block text-sm font-medium text-brand-dark mb-1">
                 Password
               </label>
               <input
@@ -104,16 +108,23 @@ export default function LoginPage() {
               </div>
             )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full btn-primary py-3 text-base"
-            >
+            <button type="submit" disabled={loading} className="w-full btn-primary py-3 text-base">
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    />
                   </svg>
                   Signing in...
                 </span>
@@ -132,7 +143,10 @@ export default function LoginPage() {
           <div className="space-y-3">
             <div
               className="flex items-center justify-between cursor-pointer hover:bg-brand-cream rounded-lg p-2 -m-2 transition-colors"
-              onClick={() => { setEmail('admin@warehouse.com'); setPassword('admin123') }}
+              onClick={() => {
+                setEmail('admin@warehouse.com')
+                setPassword('admin123')
+              }}
             >
               <div>
                 <p className="text-sm font-medium text-brand-dark">Admin</p>
@@ -145,10 +159,15 @@ export default function LoginPage() {
             <div className="border-t border-brand-dark/10" />
             <div
               className="flex items-center justify-between cursor-pointer hover:bg-brand-cream rounded-lg p-2 -m-2 transition-colors"
-              onClick={() => { setEmail('marco.rossi@tecnoitalia.it'); setPassword('client123') }}
+              onClick={() => {
+                setEmail('marco.rossi@tecnoitalia.it')
+                setPassword('client123')
+              }}
             >
               <div>
-                <p className="text-sm font-medium text-brand-dark">Marco Rossi — TecnoItalia S.r.l.</p>
+                <p className="text-sm font-medium text-brand-dark">
+                  Marco Rossi — TecnoItalia S.r.l.
+                </p>
                 <p className="text-xs text-brand-dark/50">marco.rossi@tecnoitalia.it / client123</p>
               </div>
               <span className="text-xs bg-brand-teal/15 text-brand-teal px-2 py-1 rounded-full font-medium">
@@ -158,18 +177,27 @@ export default function LoginPage() {
             <div className="border-t border-brand-dark/10" />
             <div
               className="flex items-center justify-between cursor-pointer hover:bg-brand-cream rounded-lg p-2 -m-2 transition-colors"
-              onClick={() => { setEmail('giulia.ferrari@innovagroup.it'); setPassword('client123') }}
+              onClick={() => {
+                setEmail('giulia.ferrari@innovagroup.it')
+                setPassword('client123')
+              }}
             >
               <div>
-                <p className="text-sm font-medium text-brand-dark">Giulia Ferrari — Innova Group S.p.A.</p>
-                <p className="text-xs text-brand-dark/50">giulia.ferrari@innovagroup.it / client123</p>
+                <p className="text-sm font-medium text-brand-dark">
+                  Giulia Ferrari — Innova Group S.p.A.
+                </p>
+                <p className="text-xs text-brand-dark/50">
+                  giulia.ferrari@innovagroup.it / client123
+                </p>
               </div>
               <span className="text-xs bg-brand-teal/15 text-brand-teal px-2 py-1 rounded-full font-medium">
                 Client
               </span>
             </div>
           </div>
-          <p className="text-xs text-brand-dark/40 mt-3 text-center">Click to auto-fill credentials</p>
+          <p className="text-xs text-brand-dark/40 mt-3 text-center">
+            Click to auto-fill credentials
+          </p>
         </div>
       </div>
     </div>

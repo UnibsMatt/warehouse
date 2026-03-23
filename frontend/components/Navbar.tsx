@@ -12,10 +12,23 @@ export default async function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Brand */}
           <div className="flex items-center gap-8">
-            <Link href="/dashboard" className="flex items-center gap-2 font-bold text-xl text-brand-dark hover:text-brand-blue transition-colors">
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-2 font-bold text-xl text-brand-dark hover:text-brand-blue transition-colors"
+            >
               <div className="w-8 h-8 bg-brand-blue rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                <svg
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                  />
                 </svg>
               </div>
               Warehouse
@@ -41,13 +54,13 @@ export default async function Navbar() {
                     href="/product/new"
                     className="px-3 py-2 rounded-lg text-sm font-medium text-brand-dark/60 hover:text-brand-teal hover:bg-brand-teal/10 transition-colors"
                   >
-                    + Product
+                    Product
                   </Link>
                   <Link
                     href="/client/new"
                     className="px-3 py-2 rounded-lg text-sm font-medium text-brand-dark/60 hover:text-brand-teal hover:bg-brand-teal/10 transition-colors"
                   >
-                    + Client
+                    Client
                   </Link>
                   <Link
                     href="/admin"
@@ -63,11 +76,13 @@ export default async function Navbar() {
           {/* Right side */}
           <div className="flex items-center gap-4">
             {role && (
-              <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
-                role === 'admin'
-                  ? 'bg-brand-blue/15 text-brand-blue'
-                  : 'bg-brand-teal/15 text-brand-teal'
-              }`}>
+              <span
+                className={`text-xs font-medium px-2.5 py-1 rounded-full ${
+                  role === 'admin'
+                    ? 'bg-brand-blue/15 text-brand-blue'
+                    : 'bg-brand-teal/15 text-brand-teal'
+                }`}
+              >
                 {role === 'admin' ? 'Admin' : 'User'}
               </span>
             )}

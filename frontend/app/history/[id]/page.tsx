@@ -6,11 +6,7 @@ import type { Order } from '@/lib/types'
 
 const FASTAPI_URL = process.env.FASTAPI_URL || 'http://localhost:8000'
 
-export default async function OrderDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
+export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const cookieStore = await cookies()
   const accessToken = cookieStore.get('access_token')?.value

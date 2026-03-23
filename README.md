@@ -4,8 +4,8 @@ A production-ready fullstack warehouse management application.
 
 ## Tech Stack
 
-- **Frontend**: Next.js 14 App Router (TypeScript + Tailwind CSS)
-- **Backend**: FastAPI (Python 3.11+, async)
+- **Frontend**: Next.js 16 App Router (TypeScript + Tailwind CSS)
+- **Backend**: FastAPI (Python 3.11+)
 - **Database**: PostgreSQL 15
 - **Auth**: JWT (access token + refresh token in httpOnly cookies)
 - **Infrastructure**: Docker + Docker Compose + Nginx

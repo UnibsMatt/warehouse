@@ -51,9 +51,7 @@ export default async function AdminPage() {
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-brand-dark">Admin Panel</h1>
-            <p className="text-brand-dark/60 mt-1">
-              All orders — {allOrders.length} total
-            </p>
+            <p className="text-brand-dark/60 mt-1">All orders — {allOrders.length} total</p>
           </div>
           {pendingCount > 0 && (
             <div className="flex items-center gap-2 bg-brand-red/10 border border-brand-red/25 px-4 py-2 rounded-lg">

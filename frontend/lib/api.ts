@@ -6,10 +6,7 @@ export interface ApiOptions extends RequestInit {
   params?: Record<string, string>
 }
 
-export async function apiFetch(
-  path: string,
-  options: ApiOptions = {}
-): Promise<Response> {
+export async function apiFetch(path: string, options: ApiOptions = {}): Promise<Response> {
   const cookieStore = await cookies()
   const accessToken = cookieStore.get('access_token')?.value
 

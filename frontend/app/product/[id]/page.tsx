@@ -7,11 +7,7 @@ import type { Product } from '@/lib/types'
 
 const FASTAPI_URL = process.env.FASTAPI_URL || 'http://localhost:8000'
 
-export default async function ProductDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
+export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const cookieStore = await cookies()
   const accessToken = cookieStore.get('access_token')?.value
@@ -38,8 +34,8 @@ export default async function ProductDetailPage({
     product.quantity === 0
       ? 'text-brand-red'
       : product.quantity <= 5
-      ? 'text-yellow-600'
-      : 'text-brand-teal'
+        ? 'text-yellow-600'
+        : 'text-brand-teal'
 
   const sortedTiers = [...(product.discount_tiers ?? [])].sort(
     (a, b) => a.min_quantity - b.min_quantity
@@ -120,9 +116,13 @@ export default async function ProductDetailPage({
                       className="flex items-center justify-between text-sm px-3 py-2 rounded-lg bg-brand-blue/5 border border-brand-blue/15"
                     >
                       <span className="text-brand-dark/70">
-                        Order <span className="font-semibold text-brand-dark">{tier.min_quantity}+</span> units
+                        Order{' '}
+                        <span className="font-semibold text-brand-dark">{tier.min_quantity}+</span>{' '}
+                        units
                       </span>
-                      <span className="font-semibold text-brand-blue">{tier.discount_percent}% off</span>
+                      <span className="font-semibold text-brand-blue">
+                        {tier.discount_percent}% off
+                      </span>
                     </div>
                   ))}
                 </div>

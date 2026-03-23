@@ -53,9 +53,7 @@ export default function NewClientForm() {
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-brand-dark mb-1">
-              First Name
-            </label>
+            <label className="block text-sm font-medium text-brand-dark mb-1">First Name</label>
             <input
               type="text"
               value={name}
@@ -66,9 +64,7 @@ export default function NewClientForm() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-brand-dark mb-1">
-              Last Name
-            </label>
+            <label className="block text-sm font-medium text-brand-dark mb-1">Last Name</label>
             <input
               type="text"
               value={surname}
@@ -81,9 +77,7 @@ export default function NewClientForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-brand-dark mb-1">
-            Email
-          </label>
+          <label className="block text-sm font-medium text-brand-dark mb-1">Email</label>
           <input
             type="email"
             value={email}
@@ -134,8 +128,19 @@ export default function NewClientForm() {
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  />
                 </svg>
                 Creating...
               </span>

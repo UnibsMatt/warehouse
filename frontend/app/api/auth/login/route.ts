@@ -12,10 +12,7 @@ export async function POST(request: NextRequest) {
     const { email, password } = body
 
     if (!email || !password) {
-      return NextResponse.json(
-        { detail: 'Email and password are required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ detail: 'Email and password are required' }, { status: 400 })
     }
 
     // Forward to FastAPI
@@ -44,9 +41,7 @@ export async function POST(request: NextRequest) {
     let userInfo: { id?: string; email?: string; role?: string; client_id?: number } = {}
     try {
       const payloadBase64 = accessToken.split('.')[1]
-      const decoded = JSON.parse(
-        Buffer.from(payloadBase64, 'base64url').toString('utf-8')
-      )
+      const decoded = JSON.parse(Buffer.from(payloadBase64, 'base64url').toString('utf-8'))
       userInfo = {
         id: decoded.sub,
         email: decoded.email,
@@ -107,9 +102,6 @@ export async function POST(request: NextRequest) {
     return response
   } catch (err) {
     console.error('Login error:', err)
-    return NextResponse.json(
-      { detail: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ detail: 'Internal server error' }, { status: 500 })
   }
 }

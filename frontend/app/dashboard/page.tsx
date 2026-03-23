@@ -42,7 +42,7 @@ export default async function DashboardPage() {
   let clients: Client[] = []
 
   try {
-    [products, clients] = await Promise.all([
+    ;[products, clients] = await Promise.all([
       fetchWithToken<Product[]>('/api/products/', accessToken),
       fetchWithToken<Client[]>('/api/clients/', accessToken),
     ])
@@ -63,9 +63,7 @@ export default async function DashboardPage() {
         {/* Page header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-brand-dark">Dashboard</h1>
-          <p className="text-brand-dark/60 mt-1">
-            Browse products and place orders.
-          </p>
+          <p className="text-brand-dark/60 mt-1">Browse products and place orders.</p>
         </div>
 
         <DashboardClient products={products} clients={clients} isClientUser={isClientUser} />

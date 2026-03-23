@@ -11,10 +11,7 @@ export async function POST(request: NextRequest) {
     const refreshToken = request.cookies.get('refresh_token')?.value
 
     if (!refreshToken) {
-      return NextResponse.json(
-        { detail: 'Refresh token missing' },
-        { status: 401 }
-      )
+      return NextResponse.json({ detail: 'Refresh token missing' }, { status: 401 })
     }
 
     // Forward to FastAPI with the refresh_token cookie
@@ -66,9 +63,6 @@ export async function POST(request: NextRequest) {
     return response
   } catch (err) {
     console.error('Refresh error:', err)
-    return NextResponse.json(
-      { detail: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ detail: 'Internal server error' }, { status: 500 })
   }
 }

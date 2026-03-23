@@ -173,11 +173,7 @@ export default function DiscountEditor({ productId, initialTiers }: DiscountEdit
         </div>
       )}
 
-      <button
-        onClick={saveTiers}
-        disabled={saving}
-        className="w-full btn-primary py-2 text-sm"
-      >
+      <button onClick={saveTiers} disabled={saving} className="w-full btn-primary py-2 text-sm">
         {saving ? 'Saving...' : 'Save Discount Tiers'}
       </button>
     </div>

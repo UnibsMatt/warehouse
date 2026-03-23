@@ -4,10 +4,7 @@ export const dynamic = 'force-dynamic'
 
 const FASTAPI_URL = process.env.FASTAPI_URL || 'http://localhost:8000'
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const accessToken = request.cookies.get('access_token')?.value
@@ -17,14 +14,11 @@ export async function PUT(
     }
 
     const body = await request.json()
-    const response = await fetch(
-      `${FASTAPI_URL}/api/orders/${id}/status`,
-      {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify(body),
-      }
-    )
+    const response = await fetch(`${FASTAPI_URL}/api/orders/${id}/status`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(body),
+    })
     const data = await response.json()
     return NextResponse.json(data, { status: response.status })
   } catch (err) {

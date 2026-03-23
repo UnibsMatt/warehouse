@@ -16,7 +16,11 @@ export function calculateDiscount(tiers: DiscountTier[], quantity: number): numb
 /**
  * Returns the discounted unit price for the given quantity, rounded to 2 dp.
  */
-export function discountedPrice(unitPrice: number, tiers: DiscountTier[], quantity: number): number {
+export function discountedPrice(
+  unitPrice: number,
+  tiers: DiscountTier[],
+  quantity: number
+): number {
   const pct = calculateDiscount(tiers, quantity)
   return Math.round(unitPrice * (1 - pct / 100) * 100) / 100
 }
