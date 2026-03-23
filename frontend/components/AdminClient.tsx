@@ -1,13 +1,25 @@
 'use client'
 
 import { useState } from 'react'
-import type { Order } from '@/lib/types'
+import { useRouter } from 'next/navigation'
+import type { Order, OrderItem } from '@/lib/types'
+
+function orderTotal(order: Order): number {
+  return order.items.reduce((sum, item: OrderItem) => {
+    const tier = item.product.discount_tiers
+      .filter((t) => t.min_quantity <= item.quantity)
+      .sort((a, b) => b.min_quantity - a.min_quantity)[0]
+    const discount = tier?.discount_percent ?? 0
+    return sum + item.product.price * (1 - discount / 100) * item.quantity
+  }, 0)
+}
 
 interface AdminClientProps {
   initialOrders: Order[]
 }
 
 export default function AdminClient({ initialOrders }: AdminClientProps) {
+  const router = useRouter()
   const [orders, setOrders] = useState<Order[]>(initialOrders)
   const [completing, setCompleting] = useState<Set<number>>(new Set())
   const [errorMsg, setErrorMsg] = useState<string>('')
@@ -98,6 +110,9 @@ export default function AdminClient({ initialOrders }: AdminClientProps) {
                   <th className="px-6 py-3 text-left text-xs font-semibold text-brand-dark/50 uppercase tracking-wider">
                     Date
                   </th>
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-brand-dark/50 uppercase tracking-wider">
+                    Total
+                  </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-brand-dark/50 uppercase tracking-wider">
                     Status
                   </th>
@@ -108,7 +123,11 @@ export default function AdminClient({ initialOrders }: AdminClientProps) {
               </thead>
               <tbody className="divide-y divide-brand-dark/10">
                 {orders.map((order) => (
-                  <tr key={order.id} className="hover:bg-brand-cream/60 transition-colors">
+                  <tr
+                    key={order.id}
+                    onClick={() => router.push(`/history/${order.id}`)}
+                    className="hover:bg-brand-cream/60 transition-colors cursor-pointer"
+                  >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm font-mono font-medium text-brand-dark">
                         #{order.id}
@@ -143,6 +162,11 @@ export default function AdminClient({ initialOrders }: AdminClientProps) {
                         {formatDate(order.created_at)}
                       </span>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                      <span className="text-sm font-semibold text-brand-dark">
+                        €{orderTotal(order).toFixed(2)}
+                      </span>
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {order.status === 'pending' ? (
                         <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-brand-red/10 text-brand-red">
@@ -156,7 +180,10 @@ export default function AdminClient({ initialOrders }: AdminClientProps) {
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                    <td
+                      className="px-6 py-4 whitespace-nowrap text-right"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       {order.status === 'pending' && (
                         <button
                           onClick={() => markComplete(order.id)}

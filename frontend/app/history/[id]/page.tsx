@@ -2,18 +2,28 @@ import { cookies } from 'next/headers'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
-import type { Order } from '@/lib/types'
+import type { Order, OrderItem } from '@/lib/types'
 
 const FASTAPI_URL = process.env.FASTAPI_URL || 'http://localhost:8000'
+
+function getAppliedDiscount(item: OrderItem): number {
+  const tier = item.product.discount_tiers
+    .filter((t) => t.min_quantity <= item.quantity)
+    .sort((a, b) => b.min_quantity - a.min_quantity)[0]
+  return tier?.discount_percent ?? 0
+}
+
+function lineTotal(item: OrderItem): number {
+  const discount = getAppliedDiscount(item)
+  return item.product.price * (1 - discount / 100) * item.quantity
+}
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const cookieStore = await cookies()
   const accessToken = cookieStore.get('access_token')?.value
 
-  if (!accessToken) {
-    redirect('/login')
-  }
+  if (!accessToken) redirect('/login')
 
   const res = await fetch(`${FASTAPI_URL}/api/orders/${id}`, {
     headers: {
@@ -29,6 +39,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
   const order: Order = await res.json()
 
   const totalItems = order.items.reduce((sum, item) => sum + item.quantity, 0)
+  const grandTotal = order.items.reduce((sum, item) => sum + lineTotal(item), 0)
 
   return (
     <div className="min-h-screen bg-brand-cream">
@@ -62,14 +73,21 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 </span>
               </p>
             </div>
-            <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-brand-teal/15 text-brand-teal">
-              <span className="w-1.5 h-1.5 rounded-full bg-brand-teal"></span>
-              Completed
-            </span>
+            {order.status === 'pending' ? (
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-brand-red/10 text-brand-red">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-red" />
+                Pending
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-brand-teal/15 text-brand-teal">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-teal" />
+                Completed
+              </span>
+            )}
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="bg-brand-cream rounded-lg p-4">
               <p className="text-xs font-medium text-brand-dark/50 uppercase tracking-wider mb-1">
                 Total Items
@@ -81,6 +99,12 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                 Product Lines
               </p>
               <p className="text-3xl font-bold text-brand-dark">{order.items.length}</p>
+            </div>
+            <div className="bg-brand-cream rounded-lg p-4">
+              <p className="text-xs font-medium text-brand-dark/50 uppercase tracking-wider mb-1">
+                Order Total
+              </p>
+              <p className="text-3xl font-bold text-brand-blue">€{grandTotal.toFixed(2)}</p>
             </div>
           </div>
 
@@ -117,29 +141,69 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             </div>
           </div>
 
-          {/* Items */}
+          {/* Items with pricing */}
           <div className="border-t border-brand-dark/10 pt-6">
             <h2 className="text-xs font-semibold text-brand-dark/50 uppercase tracking-wider mb-3">
               Items
             </h2>
-            <div className="space-y-2">
-              {order.items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between py-2.5 px-3 rounded-lg bg-brand-cream"
-                >
-                  <div>
-                    <p className="font-medium text-brand-dark text-sm">{item.product.name}</p>
-                    <p className="text-xs text-brand-dark/50 font-mono">{item.product.code}</p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-brand-dark/50 bg-brand-dark/10 px-2 py-0.5 rounded-full">
-                      {item.product.type}
-                    </span>
-                    <span className="text-sm font-bold text-brand-dark">×{item.quantity}</span>
-                  </div>
-                </div>
-              ))}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-brand-dark/10">
+                    <th className="text-left pb-2 font-medium text-brand-dark/50">Product</th>
+                    <th className="text-right pb-2 font-medium text-brand-dark/50">Unit Price</th>
+                    <th className="text-right pb-2 font-medium text-brand-dark/50">Discount</th>
+                    <th className="text-right pb-2 font-medium text-brand-dark/50">Qty</th>
+                    <th className="text-right pb-2 font-medium text-brand-dark/50">Line Total</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-brand-dark/5">
+                  {order.items.map((item) => {
+                    const discount = getAppliedDiscount(item)
+                    const discountedUnit = item.product.price * (1 - discount / 100)
+                    const total = discountedUnit * item.quantity
+                    return (
+                      <tr key={item.id}>
+                        <td className="py-3 pr-4">
+                          <p className="font-medium text-brand-dark">{item.product.name}</p>
+                          <p className="text-xs text-brand-dark/50 font-mono">
+                            {item.product.code}
+                          </p>
+                        </td>
+                        <td className="py-3 text-right text-brand-dark/70 whitespace-nowrap">
+                          €{item.product.price.toFixed(2)}
+                        </td>
+                        <td className="py-3 text-right whitespace-nowrap">
+                          {discount > 0 ? (
+                            <span className="text-brand-teal font-medium">−{discount}%</span>
+                          ) : (
+                            <span className="text-brand-dark/30">—</span>
+                          )}
+                        </td>
+                        <td className="py-3 text-right font-semibold text-brand-dark">
+                          ×{item.quantity}
+                        </td>
+                        <td className="py-3 text-right font-bold text-brand-dark whitespace-nowrap">
+                          €{total.toFixed(2)}
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+                <tfoot>
+                  <tr className="border-t-2 border-brand-dark/10">
+                    <td
+                      colSpan={4}
+                      className="pt-3 text-sm font-semibold text-brand-dark/70 text-right pr-4"
+                    >
+                      Grand Total
+                    </td>
+                    <td className="pt-3 text-right text-lg font-bold text-brand-blue whitespace-nowrap">
+                      €{grandTotal.toFixed(2)}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
           </div>
 
