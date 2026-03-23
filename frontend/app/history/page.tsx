@@ -20,7 +20,7 @@ function getAppliedDiscount(
 function orderTotal(order: Order): number {
   return order.items.reduce((sum, item) => {
     const discount = getAppliedDiscount(item.product, item.quantity)
-    return sum + item.product.price * (1 - discount / 100) * item.quantity
+    return sum + Number(item.product.price) * (1 - discount / 100) * item.quantity
   }, 0)
 }
 

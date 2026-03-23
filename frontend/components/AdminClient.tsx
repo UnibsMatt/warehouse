@@ -10,7 +10,7 @@ function orderTotal(order: Order): number {
       .filter((t) => t.min_quantity <= item.quantity)
       .sort((a, b) => b.min_quantity - a.min_quantity)[0]
     const discount = tier?.discount_percent ?? 0
-    return sum + item.product.price * (1 - discount / 100) * item.quantity
+    return sum + Number(item.product.price) * (1 - discount / 100) * item.quantity
   }, 0)
 }
 

@@ -7,15 +7,16 @@ import type { Order, OrderItem } from '@/lib/types'
 const FASTAPI_URL = process.env.FASTAPI_URL || 'http://localhost:8000'
 
 function getAppliedDiscount(item: OrderItem): number {
-  const tier = item.product.discount_tiers
+  const tier = (item.product.discount_tiers ?? [])
     .filter((t) => t.min_quantity <= item.quantity)
     .sort((a, b) => b.min_quantity - a.min_quantity)[0]
   return tier?.discount_percent ?? 0
 }
 
 function lineTotal(item: OrderItem): number {
+  const price = Number(item.product.price)
   const discount = getAppliedDiscount(item)
-  return item.product.price * (1 - discount / 100) * item.quantity
+  return price * (1 - discount / 100) * item.quantity
 }
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -34,7 +35,9 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
   })
 
   if (res.status === 401) redirect('/login')
+  if (res.status === 403) redirect('/history')
   if (res.status === 404) notFound()
+  if (!res.ok) redirect('/history')
 
   const order: Order = await res.json()
 
@@ -171,7 +174,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
                           </p>
                         </td>
                         <td className="py-3 text-right text-brand-dark/70 whitespace-nowrap">
-                          €{item.product.price.toFixed(2)}
+                          €{Number(item.product.price).toFixed(2)}
                         </td>
                         <td className="py-3 text-right whitespace-nowrap">
                           {discount > 0 ? (
